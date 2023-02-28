@@ -76,6 +76,6 @@ get_pod=$(kubectl get pod | grep httpd-deployment-$name | awk '{print $1}')
 
 for file in /home/kubemaster/site/$domain/file/*
 do
-    kubectl cp /home/kubemaster/site/$domain/file/$file $get_pod:/usr/local/apache2/htdocs/
+    kubectl cp $file $get_pod:/usr/local/apache2/htdocs/
     echo "done"
 done
