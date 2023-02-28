@@ -17,6 +17,7 @@ help()
 if [ $# -eq 0 ]; then help; fi
 
 domain=$1
+name=$(echo $domain | cut -d "." -f1)
 if [ ! -d "/home/kubemaster/site/$domain" ]; then
     mkdir -p /home/kubemaster/site/$domain/apache
     mkdir -p /home/kubemaster/site/$domain/file
@@ -30,12 +31,12 @@ unzip $2 -d /home/kubemaster/site/$domain/file
 echo "apiVersion: v1
 kind: Service
 metadata:
-  name: httpd-$domain
+  name: httpd-${name}
   namespace: default
 spec:
   type: NodePort
   selector:
-    app: httpd_app_$domain
+    app: httpd_app_${name}
   ports:
     - port: 80
       targetPort: 80
@@ -44,23 +45,32 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: httpd-deployment-$domain
+  name: httpd-deployment-${name}
   namespace: default
   labels:
-    app: httpd_app_$domain
+    app: httpd_app_${name}
 spec:
   selector:
     matchLabels:
-      app: httpd_app_$domain
+      app: httpd_app_${name}
   template:
     metadata:
       labels:
-        app: httpd_app_$domain
+        app: httpd_app_${name}
     spec:
       containers:
-        - name: httpd-container-$domain
+        - name: httpd-container-${name}
           image: httpd:latest
           ports:
             - containerPort: 80
 
-" > /home/kubemaster/site/$domain/kubeconf/
+" > /home/kubemaster/site/$domain/kubeconf/kubeconf.yaml
+
+if [ -e /home/kubemaster/site/$domain/kubeconf/kubeconf.yaml ]; then
+    kubectl apply -f /home/kubemaster/site/$domain/kubeconf/kubeconf.yaml
+else
+    echo "erreur : fichier kubeconf.yaml non disponible"
+fi
+
+pods = $(kubectl get pod | grep httpd-deployment-$name | awk '{print $1}')
+echo $pods
