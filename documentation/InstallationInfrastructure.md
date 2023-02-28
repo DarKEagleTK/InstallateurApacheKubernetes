@@ -168,3 +168,11 @@ On fait le join :
 ```bash
 kubeadm join <ip> --token <token> --hash sha256:<hash> --cri-socket /var/run/cri-dockerd.sock
 ```
+
+### Vérification
+
+On peut verifier que les workers sont bien installé et connecté au cluster, il faut aller sur le master et tapez la commande : 
+
+```bash
+kubectl get node
+```
