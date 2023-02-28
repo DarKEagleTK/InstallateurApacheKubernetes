@@ -160,7 +160,9 @@ kubeadm token create
 ```
 
 Les tokens ont une durée de vie de 24h.
+## Installation du Worker
 
+Il faut que la configuration pré-initialisation ait été faite sur le serveur.
 ### Connexion Au Cluster
 
 On fait le join : 
