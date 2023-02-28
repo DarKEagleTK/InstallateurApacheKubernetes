@@ -72,9 +72,10 @@ else
     echo "erreur : fichier kubeconf.yaml non disponible"
 fi
 sleep 10
-liste_pods = $(kubectl get pod | grep httpd-deployment-$name | awk '{print $1}')
+get_pod=$(kubectl get pod | grep httpd-deployment-$name | awk '{print $1}')
 
-for pods in "${liste_pods[@]}"
+for file in /home/kubemaster/site/$domain/file/*
 do
-    kubectl cp /home/kubemaster/site/$domain/file $pods:/usr/local/apache2/htdocs
+    kubectl cp /home/kubemaster/site/$domain/file/$file $get_pod:/usr/local/apache2/htdocs/
+    echo "done"
 done
