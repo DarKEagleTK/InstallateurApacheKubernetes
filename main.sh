@@ -77,7 +77,7 @@ else
 fi
 
 echo "
-version: '3.8'
+version: '3'
 services:
     apache:
         container_name: container_$domain
