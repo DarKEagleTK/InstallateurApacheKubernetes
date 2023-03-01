@@ -15,6 +15,7 @@ help()
 }
 
 if [ $# -eq 0 ]; then help; fi
+if [ -z "$2" ]; then help; fi
 
 domain=$1
 name=$(echo $domain | cut -d "." -f1)
